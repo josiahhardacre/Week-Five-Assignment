@@ -1,0 +1,114 @@
+# Josiah Hardacre collaborated with Nicole Ignasiak, Trevor Waite, Nathan Pugh
+# Intro to Computers
+# 10/7/15
+# Week Five Assignment
+
+"""
+
+GameOfWar.py
+
+Created by Neumann, Daniel on 2015-10-06.
+Copyright (c) 2015 __MyCompanyName__. All rights reserved.
+
+This is the shell copy. Fill this out to get it to work
+
+"""
+import random	
+
+def main():
+	"""
+	Deck, PlayerAHand and PlayerBHand are all lists
+	"""
+	
+	Deck = []
+	PlayerAHand = []
+	PlayerBHand = []
+	gameCounter = 0
+
+	# Create deck.  Cards are represented by an integer value
+	for i in range(52):
+		Deck.append(i)
+	
+	# Shuffle the deck
+	random.shuffle(Deck)
+	
+	# Deal 1/2 the cards to each player
+	for x in range(26):
+		PlayerAHand.append(Deck.pop())
+		PlayerBHand.append(Deck.pop())
+	
+	# Main Gameplay
+		
+	while len(PlayerAHand) > 0 and len(PlayerBHand) > 0:
+		gameCounter += 1
+		PlayerAHand, PlayerBHand = playRound(PlayerAHand, PlayerBHand)
+	
+	# End of game
+	
+	print("There were ", gameCounter, " rounds played")
+
+def playRound(PlayerA, PlayerB):
+	
+	AsCard = PlayerA.pop()
+	BsCard = PlayerB.pop()
+	
+	AsRank = getRank(AsCard)
+	BsRank = getRank(BsCard)
+	
+	if AsRank > BsRank:
+		PlayerA.insert(0, AsCard)
+		PlayerA.insert(0, BsCard)
+	elif BsRank > AsRank:
+		PlayerB.insert(0, AsCard)
+		PlayerB.insert(0, BsCard)
+	else: 
+		PlayerA, PlayerB = WAR(PlayerA, PlayerB)
+		
+	'''
+	This is the method that plays one round of War
+	The method takes PlayerA and PlayerB as input parameters
+	and returns PlayerA and PlayerB after modification
+	for the round
+	
+	Remember, high card wins. I have included a convenience
+	function getRank(anyCard) that will return the rank.
+	
+	See the README.md for the variations of
+	the game to program.
+	'''
+	return PlayerA, PlayerB
+
+
+def WAR(PlayerA, PlayerB):
+	if len(PlayerA) > 3 and len(PlayerB) > 3:
+		AsCard = PlayerA.pop()
+		AsCardtwo = PlayerA.pop()
+		AsCardthree = PlayerA.pop()
+		AsCardfour = PlayerA.pop()
+		BsCard = PlayerB.pop()
+		BsCardtwo = PlayerB.pop()
+		BsCardthree = PlayerB.pop()
+		BsCardfour = PlayerB.pop()
+
+		AllCardsA = [AsCard, AsCardtwo, AsCardthree, AsCardfour]		
+		AllCardsB = [BsCard, BsCardtwo, BsCardthree, BsCardfour]
+
+		AsRank = getRank(AsCardfour)
+		BsRank = getRank(BsCardfour)
+
+		if AsRank > BsRank:
+			PlayerA = AllCardsA + AllCardsB + PlayerA
+		elif BsRank > AsRank:
+			PlayerB = AllCardsA + AllCardsB + PlayerB
+		else: 
+			pass
+	return PlayerA, PlayerB
+
+	
+def getRank(anyCard):
+	return anyCard % 13
+
+
+if __name__ == '__main__':
+	main()
+
